@@ -1,3 +1,4 @@
+#include "oslabs.h"
 
 int fifo_victim(struct PTE page_table[TABLEMAX], int table_cnt) {
     int v = -1;
