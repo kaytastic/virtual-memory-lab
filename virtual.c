@@ -66,9 +66,9 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX], int *table_cnt,
 
     page_table[v].is_valid = 0;
     page_table[v].frame_number = -1;
-    page_table[v].arrival_timestamp = -1;
-    page_table[v].last_access_timestamp = -1;
-    page_table[v].reference_count = -1;
+    page_table[v].arrival_timestamp = 0;
+    page_table[v].last_access_timestamp = 0;
+    page_table[v].reference_count = 0;
 
     p->is_valid = 1;
     p->frame_number = f;
@@ -96,6 +96,8 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX], int table_cnt,
             continue;
         }
 
+        faults++;
+
         if (frame_cnt > 0) { 
             int f = frame_pool[--frame_cnt];
             p->is_valid = 1;
@@ -103,7 +105,6 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX], int table_cnt,
             p->arrival_timestamp = t;
             p->last_access_timestamp = t;
             p->reference_count = 1;
-            faults++;
             continue;
         }
 
@@ -113,17 +114,15 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX], int table_cnt,
 
         page_table[v].is_valid = 0;
         page_table[v].frame_number = -1;
-        page_table[v].arrival_timestamp = -1;
-        page_table[v].last_access_timestamp = -1;
-        page_table[v].reference_count = -1;
+        page_table[v].arrival_timestamp = 0;
+        page_table[v].last_access_timestamp = 0;
+        page_table[v].reference_count = 0;
 
         p->is_valid = 1;
         p->frame_number = f;
         p->arrival_timestamp = t;
         p->last_access_timestamp = t;
         p->reference_count = 1;
-
-        faults++;
     }
 
     return faults;
@@ -156,9 +155,9 @@ int process_page_access_lru(struct PTE page_table[TABLEMAX], int *table_cnt,
 
     page_table[v].is_valid = 0;
     page_table[v].frame_number = -1;
-    page_table[v].arrival_timestamp = -1;
-    page_table[v].last_access_timestamp = -1;
-    page_table[v].reference_count = -1;
+    page_table[v].arrival_timestamp = 0;
+    page_table[v].last_access_timestamp = 0;
+    page_table[v].reference_count = 0;
 
     p->is_valid = 1;
     p->frame_number = f;
@@ -186,6 +185,8 @@ int count_page_faults_lru(struct PTE page_table[TABLEMAX], int table_cnt,
             continue;
         }
 
+        faults++;
+
         if (frame_cnt > 0) {
             int f = frame_pool[--frame_cnt];
             p->is_valid = 1;
@@ -193,7 +194,6 @@ int count_page_faults_lru(struct PTE page_table[TABLEMAX], int table_cnt,
             p->arrival_timestamp = t;
             p->last_access_timestamp = t;
             p->reference_count = 1;
-            faults++;
             continue;
         }
 
@@ -211,8 +211,6 @@ int count_page_faults_lru(struct PTE page_table[TABLEMAX], int table_cnt,
         p->arrival_timestamp = t;
         p->last_access_timestamp = t;
         p->reference_count = 1;
-
-        faults++;
     }
 
     return faults;
@@ -246,9 +244,9 @@ int process_page_access_lfu(struct PTE page_table[TABLEMAX], int *table_cnt,
 
     page_table[v].is_valid = 0;
     page_table[v].frame_number = -1;
-    page_table[v].arrival_timestamp = -1;
-    page_table[v].last_access_timestamp = -1;
-    page_table[v].reference_count = -1;
+    page_table[v].arrival_timestamp = 0;
+    page_table[v].last_access_timestamp = 0;
+    page_table[v].reference_count = 0;
 
     p->is_valid = 1;
     p->frame_number = f;
@@ -276,6 +274,8 @@ int count_page_faults_lfu(struct PTE page_table[TABLEMAX], int table_cnt,
             continue;
         }
 
+        faults++;
+
         if (frame_cnt > 0) {
             int f = frame_pool[--frame_cnt];
             p->is_valid = 1;
@@ -283,7 +283,6 @@ int count_page_faults_lfu(struct PTE page_table[TABLEMAX], int table_cnt,
             p->arrival_timestamp = t;
             p->last_access_timestamp = t;
             p->reference_count = 1;
-            faults++;
             continue;
         }
 
@@ -301,8 +300,6 @@ int count_page_faults_lfu(struct PTE page_table[TABLEMAX], int table_cnt,
         p->arrival_timestamp = t;
         p->last_access_timestamp = t;
         p->reference_count = 1;
-
-        faults++;
     }
 
     return faults;
